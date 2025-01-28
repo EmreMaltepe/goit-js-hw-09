@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sources":["../src/init.js"],"sourcesContent":["window.global ||= window;"],"names":[],"mappings":"0uBAAA,OAAO,SAAP,OAAO,OAAW"}
