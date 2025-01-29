@@ -1,27 +1,47 @@
 const form = document.querySelector(".feedback-form");
-const localeKeyName = "feedback-form-state";
-const emailInput = form.querySelector('input[name="email"]');
-const messageInput = form.querySelector('textarea[name="message"]');
-const dataBack = localStorage.getItem(localeKeyName);
-if (dataBack) {
-  const { email, message } = JSON.parse(dataBack);
-  emailInput.value = email;
-  messageInput.value = message;
-};
+const STORAGE_KEY = "feedback-form-state";
 
-function saveLocal(event) {
-  event.preventDefault();
-  const formInputs = {
+// Yerel depodaki verileri yükleme
+function loadFormData() {
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  if (savedData) {
+    const { email, message } = JSON.parse(savedData);
+    form.elements.email.value = email || "";
+    form.elements.message.value = message || "";
+  }
+}
+
+// Form verilerini yerel depoya kaydetme
+function saveFormData() {
+  const formData = {
     email: form.elements.email.value.trim(),
     message: form.elements.message.value.trim(),
   };
-  if (!formInputs.email || !formInputs.message) {
-    alert("Please fill in all fields");
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+}
+
+// Form gönderildiğinde işlemler
+function handleSubmit(event) {
+  event.preventDefault();
+
+  const formData = {
+    email: form.elements.email.value.trim(),
+    message: form.elements.message.value.trim(),
+  };
+
+  if (!formData.email || !formData.message) {
+    alert("Both fields must be filled out!");
     return;
   }
-  const inputTransformed = JSON.stringify(formInputs);
-  localStorage.setItem(localeKeyName, inputTransformed);
-  console.log(inputTransformed);
+
+  console.log("Form submitted:", formData);
+  localStorage.removeItem(STORAGE_KEY);
   form.reset();
 }
-form.addEventListener("submit", saveLocal);
+
+// Olay dinleyicileri
+form.addEventListener("input", saveFormData);
+form.addEventListener("submit", handleSubmit);
+
+// Sayfa yüklendiğinde yerel depodaki verileri doldurma
+document.addEventListener("DOMContentLoaded", loadFormData);
