@@ -1,5 +1,5 @@
-import "../js/init";
-import { images } from ".data/images";
+import "./js/init";
+
 import SimpleLightbox from "simplelightbox";
 import "/node_modules/simplelightbox/dist/simple-lightbox.min.css";
 
