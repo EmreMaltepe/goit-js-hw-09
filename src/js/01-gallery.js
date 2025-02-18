@@ -1,7 +1,7 @@
-import "./js/init";
-import { images } from "./data/images";
+import "./init.js";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import { images } from "../data/images";
 
 const images = [
   {
@@ -70,20 +70,27 @@ const images = [
 ];
 
 const list = document.querySelector(".gallery");
-const markup = images
+const galleryMarkup = images
   .map(
-    (image) =>
-      `<li class="gallery-item"><a class="gallery-link" href="${image.original.replace(
-        /^<|>$/g,
-        ""
-      )}"><img class="gallery-image" src="${image.preview.replace(
-        /^<|>$/g,
-        ""
-      )}" alt="${image.description}"/></a></li>`
+    ({ preview, original, description }) => `
+    <li class="gallery-item">
+      <a class="gallery-link" href="${original}">
+        <img
+          class="gallery-image"
+          src="${preview}"
+          alt="${description}"
+        />
+      </a>
+    </li>
+  `
   )
   .join("");
-list.insertAdjacentHTML("beforeend", markup);
-new SimpleLightbox(".gallery a",{
+
+// Galeri markup'u ekle
+galleryContainer.innerHTML = galleryMarkup;
+
+// SimpleLightbox başlatma
+new SimpleLightbox(".gallery a", {
   captionsData: "alt",
   captionDelay: 250,
 });
